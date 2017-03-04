@@ -14,30 +14,14 @@ function getHistory(){
   },
   function (historyItems){
     for (var i = 0; i < historyItems.length; i++){
-      // create object with properties you want to fill up
-      var item = {}
-      item.url = historyItems[i].url
-      item.visitTimes = []
-
-      chrome.history.getVisits({
-        url: historyItems[i].url
-      },
-      function (visitItems){
-        for (var i = 0; i < visitItems.length; i++){
-          item.visitTimes.push(visitItems[i].visitTime);
-          urls.push(item)
-          console.log(item)
-        }
-      });
+      urls.push(historyItems[i].url);
     }
-    // console.log(urls);
+
+    //console.log(urls);
     //console.log(urls.length)
-    //urlCleanup(urls);
+    urlCleanup(urls);
 
   });
-
-
-
 }
 
 getHistory();
