@@ -14,16 +14,19 @@ function getHistory(){
   },
   function (historyItems){
     for (var i = 0; i < historyItems.length; i++){
-      // create object with properties you want to fill up
+      // create object for urls
       var item = {}
       item.url = historyItems[i].url
+      //create array for all the times a site has been visited
       item.visitTimes = []
 
+      //get visit timestamp for all urls visited in the past x amount of time
       chrome.history.getVisits({
         url: historyItems[i].url
       },
       function (visitItems){
         for (var i = 0; i < visitItems.length; i++){
+          //push visit times to url object
           item.visitTimes.push(visitItems[i].visitTime);
           urls.push(item)
           console.log(item)
