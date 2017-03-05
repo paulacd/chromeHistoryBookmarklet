@@ -2,37 +2,53 @@ console.log('hi');
 var urls = [];
 var cleanUrls = [];
 
+chrome.browserAction.onClicked.addListener(function () {
+  console.log('registered click');
+  getHistory();
+})
+
 function getHistory(){
   console.log('inside getHistory');
-  var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
-  var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
+  var millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
+  var oneWeekAgo = (new Date).getTime() - millisecondsPerWeek;
+  var twoWeeksAgo = (new Date).getTime() - millisecondsPerWeek * 2;
 
   chrome.history.search({
     'text': '',              // Return every history item....
-    'startTime': oneWeekAgo,  // that was accessed less than one week ago.
-    'maxResults': 1000000
+    'startTime': twoWeeksAgo,  // that was accessed less than one week ago.
+    'endTime': oneWeekAgo,
+    'maxResults': 1
   },
   function (historyItems){
-    for (var i = 0; i < historyItems.length; i++){
-      // create object for urls
-      var item = {}
-      item.url = historyItems[i].url
-      //create array for all the times a site has been visited
-      item.visitTimes = []
-
-      //get visit timestamp for all urls visited in the past x amount of time
-      chrome.history.getVisits({
-        url: historyItems[i].url
-      },
-      function (visitItems){
-        for (var i = 0; i < visitItems.length; i++){
-          //push visit times to url object
-          item.visitTimes.push(visitItems[i].visitTime);
-          urls.push(item)
-          console.log(item)
-        }
+    //debugger;
+    var firstItem = historyItems[0];
+    if (firstItem) {
+      var url = firstItem.url;
+      //alert(url);
+      chrome.tabs.create({
+        'url': url,
       });
     }
+    // for (var i = 0; i < historyItems.length; i++){
+    //   // create object for urls
+    //   var item = {}
+    //   item.url = historyItems[i].url
+    //   //create array for all the times a site has been visited
+    //   item.visitTimes = []
+    //
+    //   //get visit timestamp for all urls visited in the past x amount of time
+    //   chrome.history.getVisits({
+    //     url: historyItems[i].url
+    //   },
+    //   function (visitItems){
+    //     for (var i = 0; i < visitItems.length; i++){
+    //       //push visit times to url object
+    //       item.visitTimes.push(visitItems[i].visitTime);
+    //       urls.push(item)
+    //       console.log(item)
+    //     }
+    //   });
+    // }
     // console.log(urls);
     //console.log(urls.length)
     //urlCleanup(urls);
@@ -43,7 +59,7 @@ function getHistory(){
 
 }
 
-getHistory();
+//getHistory();
 
 
 // chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
