@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "version": "0.1",
 
-  "description": "Shows percentage of https and http traffic",
+  "description": "Takes you back to the website you were on at this time, one week ago",
 
   "permissions": [
     "tabs",
@@ -12,7 +12,7 @@
   ],
 
   "browser_action": {
-    "default_title": "History Watcher"
+    "default_title": "Blast from the past"
   },
   "background": {
     "scripts": [
